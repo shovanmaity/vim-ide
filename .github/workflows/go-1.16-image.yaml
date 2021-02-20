@@ -1,0 +1,24 @@
+name: go-1.16-image
+on:
+  push:
+    branches:
+    - '*'
+    tags:
+    - '*'
+jobs:
+  build:
+    name: Build and push docker images of go 1.16 vim ide
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out shovanmaity/vim-ide repo
+        uses: actions/checkout@v2
+
+      - name: Login to quay
+        uses: docker/login-action@v1 
+        with:
+          registry: quay.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push image
+        run: make push-go-1.16
